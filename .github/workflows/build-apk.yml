@@ -13,6 +13,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Test & Build APK
@@ -28,6 +31,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Generate Release Keystore
+        run: |
+          keytool -genkeypair -v -keystore app/keystore.jks -alias hidorm-relay -keyalg RSA -keysize 2048 -validity 10000 -storepass hidorm1234 -keypass hidorm1234 -dname "CN=HiDorm, OU=Relay, O=HiDorm, L=Seoul, ST=Seoul, C=KR"
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
@@ -41,19 +48,26 @@ jobs:
         run: |
           gradle assembleRelease assembleDebug --stacktrace
 
-      - name: Upload Debug APK
+      - name: Upload Debug APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: hidorm-sms-relay-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: ignore
 
-      - name: Upload Release APK
+      - name: Upload Release APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: hidorm-sms-relay-release-apk
           path: app/build/outputs/apk/release/*.apk
           if-no-files-found: ignore
+
+      - name: Update GitHub Release v1.0.0 Assets
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          gh release upload v1.0.0 app/build/outputs/apk/release/*.apk app/build/outputs/apk/debug/*.apk --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release (On Tag Push)
         if: startsWith(github.ref, 'refs/tags/v')

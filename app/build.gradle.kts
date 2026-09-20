@@ -19,6 +19,11 @@ android {
     }
 
     signingConfigs {
+        getByName("debug") {
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+        }
         create("release") {
             val keystorePath = project.findProperty("KEYSTORE_PATH") as? String ?: "keystore.jks"
             val kFile = file(keystorePath)
@@ -27,10 +32,16 @@ android {
                 storePassword = project.findProperty("KEYSTORE_PASSWORD") as? String ?: "hidorm1234"
                 keyAlias = project.findProperty("KEY_ALIAS") as? String ?: "hidorm-relay"
                 keyPassword = project.findProperty("KEY_PASSWORD") as? String ?: "hidorm1234"
-                enableV1Signing = true
-                enableV2Signing = true
-                enableV3Signing = true
+            } else {
+                val debugConfig = signingConfigs.getByName("debug")
+                storeFile = debugConfig.storeFile
+                storePassword = debugConfig.storePassword
+                keyAlias = debugConfig.keyAlias
+                keyPassword = debugConfig.keyPassword
             }
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
         }
     }
 
@@ -41,16 +52,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            val releaseSigning = signingConfigs.getByName("release")
-            if (releaseSigning.storeFile != null && releaseSigning.storeFile!!.exists()) {
-                signingConfig = releaseSigning
-            } else {
-                signingConfig = signingConfigs.getByName("debug")
-            }
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
