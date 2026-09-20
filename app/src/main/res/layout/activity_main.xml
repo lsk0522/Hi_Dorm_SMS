@@ -55,6 +55,16 @@
                 app:tint="@color/apple_label_primary" />
 
             <ImageButton
+                android:id="@+id/btnPermissions"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/apple_circle_button"
+                android:contentDescription="권한 및 상주 설정"
+                android:src="@drawable/ic_shield_check"
+                app:tint="@color/apple_label_primary" />
+
+            <ImageButton
                 android:id="@+id/btnSettings"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -377,6 +387,15 @@
                             android:textColor="@color/apple_blue"
                             android:textSize="13sp" />
                     </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOpenFullPermissions"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="전체 권한 및 24/7 상주 설정 마법사 열기 >"
+                        android:textColor="@color/apple_blue" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

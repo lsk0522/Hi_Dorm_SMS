@@ -88,6 +88,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
+        val openPermissions = {
+            startActivity(Intent(this, PermissionsActivity::class.java))
+        }
+        binding.btnPermissions.setOnClickListener { openPermissions() }
+        binding.cardPersistenceSetup.setOnClickListener { openPermissions() }
+        binding.btnOpenFullPermissions.setOnClickListener { openPermissions() }
+
         val openHistory = {
             startActivity(Intent(this, HistoryActivity::class.java))
         }

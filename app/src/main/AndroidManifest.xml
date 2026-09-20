@@ -53,6 +53,12 @@
             android:label="전송 및 릴레이 내역"
             android:parentActivityName=".ui.MainActivity" />
 
+        <activity
+            android:name=".ui.PermissionsActivity"
+            android:exported="false"
+            android:label="권한 및 24/7 상주 설정"
+            android:parentActivityName=".ui.MainActivity" />
+
         <!-- 24/7 상주 Foreground Service -->
         <service
             android:name=".service.SmsRelayForegroundService"

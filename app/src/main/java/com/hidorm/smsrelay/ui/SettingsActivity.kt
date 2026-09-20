@@ -1,5 +1,6 @@
 package com.hidorm.smsrelay.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,10 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.toolbar.setNavigationOnClickListener {
             finish()
+        }
+
+        binding.cardPermissionsWizard.setOnClickListener {
+            startActivity(Intent(this, PermissionsActivity::class.java))
         }
 
         loadSettings()
