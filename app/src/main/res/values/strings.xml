@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Hi_Dorm SMS Relay</string>
+    <string name="service_running">Hi_Dorm SMS 중계 서비스 가동 중</string>
+    <string name="service_stopped">Hi_Dorm SMS 중계 서비스 중지됨</string>
+    <string name="notification_channel_name">SMS Relay Service</string>
+    <string name="notification_channel_desc">백그라운드 SMS 송수신 중계 서비스 상태를 상시 표시합니다.</string>
+</resources>
