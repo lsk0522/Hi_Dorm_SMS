@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         if (allGranted) {
             checkBatteryOptimization()
         } else {
-            Toast.makeText(this, "SMS 발송 및 상주를 위해 모든 권한이 필요합니다.", Toast.LENGTH_LONG).show()
+            showPermissionRestrictedGuideDialog()
         }
     }
 
@@ -248,6 +248,24 @@ class MainActivity : AppCompatActivity() {
         } else {
             promptPersistenceSetupIfNeeded()
         }
+    }
+
+    private fun showPermissionRestrictedGuideDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("⚠️ SMS 권한 허용 안내")
+            .setMessage(
+                "기숙사 문자 중계 데몬 가동을 위해 SMS 권한이 필수적입니다.\n\n" +
+                "안드로이드 시스템에 의해 권한이 차단된 경우:\n" +
+                "1. 아래 [설정 열기] 버튼을 눌러 앱 정보 화면으로 이동합니다.\n" +
+                "2. [권한] ➔ [SMS]를 '허용'으로 변경합니다.\n\n" +
+                "💡 만약 [SMS]가 회색으로 잠겨있다면:\n" +
+                "앱 정보 우측 맨 위 [점 3개(⋮)] ➔ [제한된 설정 허용]을 먼저 누르고 지문/PIN을 인증하세요."
+            )
+            .setPositiveButton("설정 열기") { _, _ ->
+                openAppSettings()
+            }
+            .setNegativeButton("닫기", null)
+            .show()
     }
 
     private fun promptPersistenceSetupIfNeeded() {
