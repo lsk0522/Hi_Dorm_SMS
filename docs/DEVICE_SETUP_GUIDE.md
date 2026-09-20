@@ -116,23 +116,6 @@ OS가 메모리 부족(OOM) 시 최근 앱에서 앱을 날려버리는 것을 �
 
 ---
 
-## 3. [고급] ADB 명령어를 통한 Phantom Process Killer 해제 (Android 12~14)
-
-Android 12부터 백그라운드 프로세스가 CPU를 많이 소모하면 강제 종료되는 정책(Phantom Process Killer)이 도입되었습니다. PC에 단말기를 USB로 연결한 후 아래 ADB 명령어를 1회 실행하면 영구 해제됩니다.
-
-```powershell
-# 1. 팬텀 프로세스 최대 한도를 최대치로 확장
-adb shell device_config put activity_manager max_phantom_processes 2147483647
-
-# 2. 팬텀 프로세스 모니터링 비활성화 (기종에 따라 지원)
-adb shell settings put global settings_enable_monitor_phantom_procs false
-
-# 3. 배터리 최적화 예외 강제 주입
-adb shell dumpsys deviceidle whitelist +com.hidorm.smsrelay
-```
-
----
-
 ## 4. 최종 점검 체크리스트 (Summary Table)
 
 | 점검 영역 | 상세 설정 항목 | 권장 설정값 | 완료 여부 |
