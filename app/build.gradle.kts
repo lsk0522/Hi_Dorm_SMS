@@ -21,13 +21,16 @@ android {
     signingConfigs {
         create("release") {
             val keystorePath = project.findProperty("KEYSTORE_PATH") as? String ?: "keystore.jks"
-            storeFile = file(keystorePath)
-            storePassword = project.findProperty("KEYSTORE_PASSWORD") as? String ?: "hidorm1234"
-            keyAlias = project.findProperty("KEY_ALIAS") as? String ?: "hidorm-relay"
-            keyPassword = project.findProperty("KEY_PASSWORD") as? String ?: "hidorm1234"
-            enableV1Signing = true
-            enableV2Signing = true
-            enableV3Signing = true
+            val kFile = file(keystorePath)
+            if (kFile.exists()) {
+                storeFile = kFile
+                storePassword = project.findProperty("KEYSTORE_PASSWORD") as? String ?: "hidorm1234"
+                keyAlias = project.findProperty("KEY_ALIAS") as? String ?: "hidorm-relay"
+                keyPassword = project.findProperty("KEY_PASSWORD") as? String ?: "hidorm1234"
+                enableV1Signing = true
+                enableV2Signing = true
+                enableV3Signing = true
+            }
         }
     }
 
@@ -38,7 +41,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            val releaseSigning = signingConfigs.getByName("release")
+            if (releaseSigning.storeFile != null && releaseSigning.storeFile!!.exists()) {
+                signingConfig = releaseSigning
+            } else {
+                signingConfig = signingConfigs.getByName("debug")
+            }
         }
         debug {
             applicationIdSuffix = ".debug"
