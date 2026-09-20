@@ -153,13 +153,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateServiceStatusUI(isRunning: Boolean) {
         if (isRunning) {
+            binding.layoutStatusBadge.setBackgroundResource(R.drawable.apple_pill_green)
             binding.viewStatusDot.setBackgroundResource(R.drawable.circle_green)
-            binding.tvStatusText.text = "서비스 가동 중 (정상 작동)"
-            binding.tvStatusText.setTextColor(ContextCompat.getColor(this, R.color.status_green))
+            binding.tvStatusText.text = "DAEMON RUNNING"
+            binding.tvStatusText.setTextColor(ContextCompat.getColor(this, R.color.apple_green))
         } else {
+            binding.layoutStatusBadge.setBackgroundResource(R.drawable.apple_pill_red)
             binding.viewStatusDot.setBackgroundResource(R.drawable.circle_red)
-            binding.tvStatusText.text = "서비스 정지됨"
-            binding.tvStatusText.setTextColor(ContextCompat.getColor(this, R.color.status_red))
+            binding.tvStatusText.text = "DAEMON STOPPED"
+            binding.tvStatusText.setTextColor(ContextCompat.getColor(this, R.color.apple_red))
         }
     }
 

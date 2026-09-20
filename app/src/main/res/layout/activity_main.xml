@@ -3,66 +3,208 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_light">
+    android:background="@color/apple_black">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/apple_black"
+        app:elevation="0dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/primary"
-            app:title="@string/app_name"
-            app:titleTextColor="#FFFFFF">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="-0.03"
+                    android:text="Hi_Dorm Relay"
+                    android:textColor="@color/apple_label_primary"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="-0.01"
+                    android:text="Apple StandBy Architecture Edition"
+                    android:textColor="@color/apple_label_secondary"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
             <ImageButton
                 android:id="@+id/btnHistory"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="end"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/apple_circle_button"
                 android:contentDescription="전송 내역"
                 android:src="@android:drawable/ic_menu_recent_history"
-                app:tint="#FFFFFF" />
+                app:tint="@color/apple_label_primary" />
 
             <ImageButton
                 android:id="@+id/btnSettings"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="end"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/apple_circle_button"
                 android:contentDescription="설정"
                 android:src="@android:drawable/ic_menu_preferences"
-                app:tint="#FFFFFF" />
-        </com.google.android.material.appbar.MaterialToolbar>
+                app:tint="@color/apple_label_primary" />
+        </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="32dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp">
 
-            <!-- 1. 서비스 가동 상태 카드 -->
+            <!-- 1. Apple StandBy 스타일 서비스 상태 카드 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardBackgroundColor="@color/apple_dark_card"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/apple_glass_stroke"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:letterSpacing="-0.02"
+                                android:text="SMS Relay Daemon"
+                                android:textColor="@color/apple_label_primary"
+                                android:textSize="19sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:id="@+id/layoutStatusBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:background="@drawable/apple_pill_red"
+                                android:gravity="center_vertical"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp">
+
+                                <View
+                                    android:id="@+id/viewStatusDot"
+                                    android:layout_width="8dp"
+                                    android:layout_height="8dp"
+                                    android:background="@drawable/circle_red" />
+
+                                <TextView
+                                    android:id="@+id/tvStatusText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:letterSpacing="0.02"
+                                    android:text="SERVICE STOPPED"
+                                    android:textColor="@color/apple_red"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchService"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:thumbTint="@color/apple_label_primary"
+                            app:trackTint="@color/apple_dark_surface" />
+                    </LinearLayout>
+
+                    <!-- 하드웨어 텔레메트리 알약 뱃지 모음 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvBatteryStatus"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/apple_pill_bg"
+                            android:gravity="center"
+                            android:paddingVertical="8dp"
+                            android:text="배터리 --%"
+                            android:textColor="@color/apple_label_secondary"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tvNetworkStatus"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/apple_pill_bg"
+                            android:gravity="center"
+                            android:paddingVertical="8dp"
+                            android:text="네트워크 대기"
+                            android:textColor="@color/apple_label_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 2. 오늘 발송 현황 (Apple Watch Activity / StandBy Metric) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/apple_dark_card"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/apple_glass_stroke"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -74,63 +216,21 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="릴레이 중계 서비스"
-                            android:textColor="@color/text_primary"
+                            android:letterSpacing="-0.02"
+                            android:text="Today's Transmission"
+                            android:textColor="@color/apple_label_primary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/switchService"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:id="@+id/viewStatusDot"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:background="@drawable/circle_red" />
-
                         <TextView
-                            android:id="@+id/tvStatusText"
+                            android:id="@+id/tvDailyQuotaText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="서비스 정지됨"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:text="0 / 450건"
+                            android:textColor="@color/apple_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- 2. 오늘 발송 현황 카드 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="금일 발송 현황 (통신사 한도 보호)"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
 
                     <ProgressBar
                         android:id="@+id/pbDailyQuota"
@@ -139,18 +239,10 @@
                         android:layout_height="8dp"
                         android:layout_marginTop="12dp"
                         android:max="450"
-                        android:progress="0" />
+                        android:progress="0"
+                        android:progressDrawable="@drawable/apple_progress_bg" />
 
-                    <TextView
-                        android:id="@+id/tvDailyQuotaText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="4dp"
-                        android:text="0 / 450건"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
-
+                    <!-- 3개 열 동심 곡률 지표 카드 -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -160,72 +252,90 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
                             android:layout_weight="1"
+                            android:background="@drawable/apple_card_inner"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:paddingVertical="14dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="성공"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
+                                android:text="SUCCESS"
+                                android:textColor="@color/apple_label_secondary"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/tvSuccessCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:letterSpacing="-0.03"
                                 android:text="0"
-                                android:textColor="@color/status_green"
-                                android:textSize="20sp"
+                                android:textColor="@color/apple_green"
+                                android:textSize="26sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="3dp"
                             android:layout_weight="1"
+                            android:background="@drawable/apple_card_inner"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:paddingVertical="14dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="실패"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
+                                android:text="FAILED"
+                                android:textColor="@color/apple_label_secondary"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/tvFailCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:letterSpacing="-0.03"
                                 android:text="0"
-                                android:textColor="@color/status_red"
-                                android:textSize="20sp"
+                                android:textColor="@color/apple_red"
+                                android:textSize="26sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
                             android:layout_weight="1"
+                            android:background="@drawable/apple_card_inner"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:paddingVertical="14dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="대기열"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
+                                android:text="QUEUE"
+                                android:textColor="@color/apple_label_secondary"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/tvQueueCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:letterSpacing="-0.03"
                                 android:text="0"
-                                android:textColor="@color/primary"
-                                android:textSize="20sp"
+                                android:textColor="@color/apple_blue"
+                                android:textSize="26sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
@@ -236,137 +346,110 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="전송 및 릴레이 내역 상세 보기 >" />
+                        android:text="전송 및 릴레이 내역 보기 >"
+                        android:textColor="@color/apple_blue" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 3. 단말기 하드웨어 관제 상태 -->
+            <!-- 3. 테스트 및 시뮬레이션 제어 센터 -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardBackgroundColor="@color/apple_dark_card"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/apple_glass_stroke"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="단말기 텔레메트리"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
+                        android:letterSpacing="-0.02"
+                        android:text="Action &amp; Simulation Center"
+                        android:textColor="@color/apple_label_primary"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tvBatteryStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="배터리: --% (확인 중)"
-                        android:textColor="@color/text_secondary"
+                    <EditText
+                        android:id="@+id/etTestPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/apple_card_inner"
+                        android:hint="수신 번호 (01012345678)"
+                        android:inputType="phone"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
                         android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/tvNetworkStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="네트워크: 연결 대기 중"
-                        android:textColor="@color/text_secondary"
+                    <EditText
+                        android:id="@+id/etTestMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/apple_card_inner"
+                        android:hint="테스트 메시지 입력"
+                        android:paddingHorizontal="14dp"
+                        android:text="[Hi_Dorm] 릴레이 브릿지 테스트 발송"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
                         android:textSize="14sp" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- 4. 즉시 테스트 발송 카드 -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="테스트 문자 발송"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="수신 번호 (01012345678)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTestPhone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="phone" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="테스트 메시지">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTestMessage"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="[Hi_Dorm] 릴레이 브릿지 테스트 발송 성공" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSendTest"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="단건 테스트 발송 실행" />
+                        android:layout_height="50dp"
+                        android:layout_marginTop="14dp"
+                        android:backgroundTint="@color/apple_blue"
+                        android:letterSpacing="0.01"
+                        android:text="단건 테스트 발송 실행"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold"
+                        app:cornerRadius="14dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRunSimulation"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_marginTop="8dp"
-                        android:text="🧪 7대 엣지케이스 자동 시뮬레이션 실행" />
+                        android:letterSpacing="0.01"
+                        android:text="🧪 7대 엣지케이스 자동 시뮬레이션"
+                        android:textColor="@color/apple_orange"
+                        app:cornerRadius="14dp"
+                        app:strokeColor="@color/apple_orange" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 5. 로그 모니터링 -->
+            <!-- 4. Xcode / Terminal 콘솔 로그 -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="실시간 이벤트 로그"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
+                android:letterSpacing="0.04"
+                android:text="LIVE CONSOLE OUTPUT"
+                android:textColor="@color/apple_label_secondary"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvLogs"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_marginTop="6dp"
-                android:background="#212121"
+                android:layout_height="170dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/apple_card_inner"
                 android:fontFamily="monospace"
-                android:padding="8dp"
+                android:padding="12dp"
                 android:scrollbars="vertical"
-                android:text="[시스템] 대기 중..."
-                android:textColor="#00FF66"
+                android:text="[System] Ready for relay daemon"
+                android:textColor="@color/apple_green"
                 android:textSize="11sp" />
 
         </LinearLayout>

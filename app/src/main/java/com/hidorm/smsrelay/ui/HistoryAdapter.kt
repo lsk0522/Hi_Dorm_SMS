@@ -47,18 +47,18 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
             binding.tvContent.text = item.content
             binding.tvTime.text = dateFormat.format(Date(item.sentAt ?: item.createdAt))
 
-            // 상태 뱃지 디자인
+            // 상태 뱃지 디자인 (Apple Pill Badge)
             binding.tvStatusBadge.text = item.status
             val badgeColor = when (item.status) {
-                "SENT", "DELIVERED" -> Color.parseColor("#4CAF50") // 초록
-                "FAILED" -> Color.parseColor("#F44336")            // 빨강
-                "DISPATCHED" -> Color.parseColor("#1976D2")        // 파랑
-                else -> Color.parseColor("#FF9800")                // 주황
+                "SENT", "DELIVERED" -> Color.parseColor("#30D158") // Apple Green
+                "FAILED" -> Color.parseColor("#FF453A")            // Apple Red
+                "DISPATCHED" -> Color.parseColor("#0A84FF")        // Apple Blue
+                else -> Color.parseColor("#FF9F0A")                // Apple Orange
             }
 
             val badgeDrawable = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
-                cornerRadius = 8f
+                cornerRadius = 50f // Pill Shape
                 setColor(badgeColor)
             }
             binding.tvStatusBadge.background = badgeDrawable

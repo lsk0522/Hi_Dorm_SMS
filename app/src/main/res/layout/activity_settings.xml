@@ -3,166 +3,356 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_light"
+    android:background="@color/apple_black"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <!-- Apple Navigation Bar -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary"
-        app:navigationIcon="@android:drawable/ic_menu_revert"
-        app:title="설정"
-        app:titleTextColor="#FFFFFF" />
+        android:layout_height="wrap_content"
+        android:background="@color/apple_black"
+        app:elevation="0dp">
 
-    <ScrollView
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/apple_black"
+            app:navigationIcon="@android:drawable/ic_menu_revert"
+            app:title="설정"
+            app:titleTextColor="@color/apple_label_primary" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:clipToPadding="false"
+        android:paddingBottom="36dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp">
+
+            <!-- Section 1: 서버 연결 정보 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:letterSpacing="0.04"
+                android:text="SERVER CONNECTION (REST &amp; WS)"
+                android:textColor="@color/apple_label_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@color/apple_dark_card"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/apple_glass_stroke"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="서버 연결 정보"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="서버 Base URL (REST API)"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <EditText
+                        android:id="@+id/etServerUrl"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="서버 Base URL (REST API)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etServerUrl"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="https://api.hidorm.example.com" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="WebSocket URL">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etWsUrl"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="wss://api.hidorm.example.com/relay/ws" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="기기 고유 ID (Device ID)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDeviceId"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="hidorm-bridge-01" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="API 시크릿 키 (Secret Key)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etApiKey"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPassword" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="https://api.hidorm.example.com"
+                        android:inputType="textUri"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="발송 제어 및 정책"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="WebSocket URL"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <EditText
+                        android:id="@+id/etWsUrl"
                         android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="wss://api.hidorm.example.com/relay/ws"
+                        android:inputType="textUri"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="발송 간격 딜레이 (ms)">
+                        android:text="기기 고유 ID (Device ID)"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etSendDelay"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:text="2000" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <EditText
+                        android:id="@+id/etDeviceId"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="일일 최대 발송 한도 (스팸 방지 락)">
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="hidorm-bridge-01"
+                        android:inputType="text"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDailyLimit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:text="450" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="API 시크릿 키 (Secret Key)"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etApiKey"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="Bearer 토큰 또는 비밀키"
+                        android:inputType="textPassword"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Section 2: 발송 제어 및 정책 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:letterSpacing="0.04"
+                android:text="POLICY &amp; RATE LIMIT"
+                android:textColor="@color/apple_label_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="@color/apple_dark_card"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/apple_glass_stroke"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="발송 간격 딜레이 (ms - 통신사 스팸 락 방지)"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etSendDelay"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="2000"
+                        android:inputType="number"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="일일 최대 발송 한도 (KISA 규정 500건 미만 권장)"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etDailyLimit"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="450"
+                        android:inputType="number"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Section 3: 직결 자동 포워딩 (1➔3) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:letterSpacing="0.04"
+                android:text="STANDALONE P2P FORWARDING (1➔2➔3)"
+                android:textColor="@color/apple_label_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/apple_dark_card"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/apple_glass_stroke"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="직결 자동 포워딩 활성화"
+                                android:textColor="@color/apple_label_primary"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="1번 폰 수신 즉시 3번 폰으로 자동 토스"
+                                android:textColor="@color/apple_label_secondary"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchForwarding"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:thumbTint="@color/apple_label_primary"
+                            app:trackTint="@color/apple_dark_surface" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="14dp"
+                        android:background="@color/apple_separator" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1번 폰 번호 (수신 감지 트리거)"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etTriggerSender"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="01012345678"
+                        android:inputType="phone"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3번 폰 번호 (최종 전달 수신자)"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etTargetRecipient"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="01098765432"
+                        android:inputType="phone"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="키워드 필터 (선택: 비워두면 모든 메시지 릴레이)"
+                        android:textColor="@color/apple_label_secondary"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/etForwardKeyword"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="14dp"
+                        android:background="@drawable/apple_input_bg"
+                        android:hint="특정 단어 포함 시만 릴레이"
+                        android:inputType="text"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="@color/apple_label_primary"
+                        android:textColorHint="@color/apple_label_tertiary"
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -174,75 +364,34 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="직결 자동 포워딩 (1번➔3번)"
-                            android:textColor="@color/text_primary"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:text="원발신자 접두사 포함 ([전달: ...])"
+                            android:textColor="@color/apple_label_primary"
+                            android:textSize="13sp" />
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/switchForwarding"
+                            android:id="@+id/switchIncludePrefix"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:checked="true" />
+                            app:thumbTint="@color/apple_label_primary"
+                            app:trackTint="@color/apple_dark_surface" />
                     </LinearLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="1번 폰 번호 (수신 트리거 발신자)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTriggerSender"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="phone"
-                            android:text="01012345678" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="3번 폰 번호 (전달받을 최종 수신자)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTargetRecipient"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="phone"
-                            android:text="01098765432" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="키워드 필터 (선택: 비워두면 전체 전달)">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etForwardKeyword"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switchIncludePrefix"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:checked="true"
-                        android:text="원발신자 번호 접두사 포함 ([전달: ...])" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Save Action Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveSettings"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="설정 저장" />
+                android:layout_height="52dp"
+                android:backgroundTint="@color/apple_blue"
+                android:letterSpacing="0.01"
+                android:text="설정 저장"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="14dp" />
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

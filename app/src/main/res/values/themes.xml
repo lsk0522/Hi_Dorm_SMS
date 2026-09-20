@@ -1,9 +1,39 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.HiDormSMS" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <!-- Primary Brand Color: Apple System Blue -->
+        <item name="colorPrimary">@color/apple_blue</item>
+        <item name="colorPrimaryVariant">#000000</item>
         <item name="colorOnPrimary">#FFFFFF</item>
-        <item name="colorSecondary">@color/accent</item>
-        <item name="android:statusBarColor">@color/primary_dark</item>
+
+        <!-- Accent Color: Apple System Green -->
+        <item name="colorSecondary">@color/apple_green</item>
+        <item name="colorOnSecondary">#000000</item>
+
+        <!-- Window & Status Bar: OLED True Black -->
+        <item name="android:windowBackground">@color/apple_black</item>
+        <item name="android:statusBarColor">@color/apple_black</item>
+        <item name="android:navigationBarColor">@color/apple_black</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+
+        <!-- Typography & Text Appearance -->
+        <item name="android:textColorPrimary">@color/apple_label_primary</item>
+        <item name="android:textColorSecondary">@color/apple_label_secondary</item>
+
+        <!-- Apple Dark Dialog Styling -->
+        <item name="alertDialogTheme">@style/Theme.HiDormSMS.Dialog</item>
+    </style>
+
+    <style name="Theme.HiDormSMS.Dialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:background">@color/apple_dark_card</item>
+        <item name="colorSurface">@color/apple_dark_card</item>
+        <item name="colorPrimary">@color/apple_blue</item>
+        <item name="android:textColorPrimary">@color/apple_label_primary</item>
+        <item name="android:textColorSecondary">@color/apple_label_secondary</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.AppleDialog</item>
+    </style>
+
+    <style name="ShapeAppearance.AppleDialog" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">22dp</item>
     </style>
 </resources>

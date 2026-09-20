@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#1976D2</color>
-    <color name="primary_dark">#0D47A1</color>
-    <color name="accent">#00E676</color>
-    <color name="bg_light">#F8F9FA</color>
-    <color name="card_bg">#FFFFFF</color>
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
-    <color name="status_green">#4CAF50</color>
-    <color name="status_red">#F44336</color>
-    <color name="status_yellow">#FFC107</color>
+    <!-- iOS 17/18 StandBy & Dark Mode Color Palette -->
+    <!-- 1. Backgrounds -->
+    <color name="apple_black">#000000</color>                   <!-- OLED True Black -->
+    <color name="apple_dark_card">#1C1C1E</color>              <!-- Secondary System Background -->
+    <color name="apple_dark_surface">#2C2C2E</color>           <!-- Tertiary System Background -->
+    <color name="apple_dark_surface_hover">#3A3A3C</color>     <!-- Quaternary Background -->
+    
+    <!-- 2. Semantic Accents -->
+    <color name="apple_blue">#0A84FF</color>                   <!-- iOS System Blue (Dark) -->
+    <color name="apple_blue_subtle">#1A3555</color>            <!-- Subtle Blue Glass -->
+    <color name="apple_green">#30D158</color>                  <!-- iOS System Green -->
+    <color name="apple_green_subtle">#1A3D24</color>           <!-- Subtle Green Glass -->
+    <color name="apple_orange">#FF9F0A</color>                 <!-- Apple Watch Ultra Orange -->
+    <color name="apple_orange_subtle">#3D2914</color>          <!-- Subtle Orange Glass -->
+    <color name="apple_red">#FF453A</color>                    <!-- Night Vision Red -->
+    <color name="apple_red_subtle">#3D1715</color>             <!-- Subtle Red Glass -->
+    <color name="apple_purple">#BF5AF2</color>                 <!-- iOS System Purple -->
+    
+    <!-- 3. Typography & Labels -->
+    <color name="apple_label_primary">#FFFFFF</color>          <!-- 100% White -->
+    <color name="apple_label_secondary">#98989D</color>        <!-- 60% Label (Gray 2) -->
+    <color name="apple_label_tertiary">#545458</color>         <!-- 30% Label (Gray 3) -->
+    <color name="apple_label_quaternary">#38383A</color>       <!-- Hairline & Dividers -->
+
+    <!-- 4. Strokes & Separators -->
+    <color name="apple_glass_stroke">#2C2C2E</color>           <!-- 1px Glass Rim Highlight -->
+    <color name="apple_separator">#38383A</color>              <!-- Grouped Table Separator -->
+
+    <!-- Compatibility Aliases -->
+    <color name="primary">#0A84FF</color>
+    <color name="primary_dark">#000000</color>
+    <color name="accent">#30D158</color>
+    <color name="bg_light">#000000</color>
+    <color name="card_bg">#1C1C1E</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#98989D</color>
+    <color name="status_green">#30D158</color>
+    <color name="status_red">#FF453A</color>
+    <color name="status_yellow">#FF9F0A</color>
 </resources>

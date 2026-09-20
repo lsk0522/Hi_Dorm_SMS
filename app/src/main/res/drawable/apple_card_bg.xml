@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- iOS 17 systemSmall 위젯 표준 곡률 22dp -->
+    <corners android:radius="22dp" />
+    <solid android:color="@color/apple_dark_card" />
+    <stroke
+        android:width="1dp"
+        android:color="@color/apple_glass_stroke" />
+</shape>
