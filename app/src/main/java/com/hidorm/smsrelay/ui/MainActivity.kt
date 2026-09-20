@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 24/7 상주 사전 설정 버튼 리스너
+        // 백그라운드 상시 가동 사전 설정 버튼 리스너
         binding.btnSetBatteryOpt.setOnClickListener {
             checkBatteryOptimization(forcePrompt = true)
         }
@@ -287,8 +287,8 @@ class MainActivity : AppCompatActivity() {
 
         if (!isBatteryIgnored || !isOverlayGranted) {
             AlertDialog.Builder(this)
-                .setTitle("24/7 백그라운드 상주 사전 설정")
-                .setMessage("공기계 단말기가 화면이 꺼져 있어도 실시간 문자를 중계하려면 [배터리 사용량 제한 없음] 및 [다른 앱 위에 표시] 설정이 필수적입니다.\n\n대시보드의 '24/7 백그라운드 상주 사전 설정' 카드에서 설정을 진행해 주세요.")
+                .setTitle("백그라운드 상시 가동 설정")
+                .setMessage("공기계 단말기가 화면이 꺼져 있어도 실시간 문자를 중계하려면 [배터리 사용량 제한 없음] 및 [다른 앱 위에 표시] 설정이 필수적입니다.\n\n대시보드의 '백그라운드 상시 가동 설정' 카드에서 설정을 진행해 주세요.")
                 .setPositiveButton("지금 설정") { _, _ ->
                     if (!isBatteryIgnored) {
                         checkBatteryOptimization(forcePrompt = true)
@@ -336,7 +336,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (isBatteryIgnored && isOverlayGranted) {
-            binding.tvPersistenceSummary.text = "24/7 상주 준비 완료"
+            binding.tvPersistenceSummary.text = "상시 가동 준비 완료"
             binding.tvPersistenceSummary.setBackgroundResource(R.drawable.apple_pill_green)
             binding.tvPersistenceSummary.setTextColor(ContextCompat.getColor(this, R.color.apple_green))
         } else {

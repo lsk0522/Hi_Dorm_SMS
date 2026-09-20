@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="-0.01"
-                    android:text="24/7 Enterprise Relay Daemon"
+                    android:text="무인 자동 문자 중계기"
                     android:textColor="@color/apple_label_secondary"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -199,7 +199,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- 1.5. 24/7 백그라운드 상주 사전 설정 카드 (Background Persistence Pre-configuration) -->
+            <!-- 1.5. 백그라운드 상시 가동 사전 설정 카드 (Background Persistence Pre-configuration) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardPersistenceSetup"
                 android:layout_width="match_parent"
@@ -228,7 +228,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:letterSpacing="-0.02"
-                            android:text="24/7 백그라운드 상주 사전 설정"
+                            android:text="백그라운드 상시 가동 설정"
                             android:textColor="@color/apple_label_primary"
                             android:textSize="17sp"
                             android:textStyle="bold" />
@@ -394,7 +394,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="전체 권한 및 24/7 상주 설정 마법사 열기 >"
+                        android:text="권한 및 상시 가동 설정 마법사 열기 >"
                         android:textColor="@color/apple_blue" />
 
                 </LinearLayout>

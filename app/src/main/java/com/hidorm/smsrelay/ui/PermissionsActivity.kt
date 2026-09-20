@@ -195,7 +195,7 @@ class PermissionsActivity : AppCompatActivity() {
         if (allPassed) {
             binding.tvHealthSummary.text = "모든 필수 권한과 절전 해제가 완료되었습니다. 24시간 365일 무중단 가동이 안전하게 보장됩니다."
             binding.layoutOverallBadge.setBackgroundResource(R.drawable.apple_pill_green)
-            binding.tvOverallBadgeText.text = "✅ 24/7 상주 준비 완벽"
+            binding.tvOverallBadgeText.text = "✅ 상시 가동 준비 완료"
             binding.tvOverallBadgeText.setTextColor(ContextCompat.getColor(this, R.color.apple_green))
         } else {
             binding.tvHealthSummary.text = "일부 권한 또는 절전 모드 예외가 꺼져 있습니다. 화면이 꺼졌을 때 문자가 지연되거나 누락될 수 있습니다."

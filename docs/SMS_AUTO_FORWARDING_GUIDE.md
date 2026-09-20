@@ -37,7 +37,7 @@ sequenceDiagram
 | 컴포넌트 | 역할 및 안정성 확보 방안 |
 | :--- | :--- |
 | **`BroadcastReceiver` (`SmsReceiver`)** | 시스템 레벨의 `Telephony.Sms.Intents.SMS_RECEIVED_ACTION`을 가로챔. `goAsync()`와 `WakeLock`을 적용하여 화면이 꺼진 상태(Sleep)에서도 비동기 발송이 완료될 때까지 CPU 생존 보장. |
-| **`Foreground Service` (`RelayService`)** | 상태바 고정 알림(Ongoing Notification)을 띄워 안드로이드 OS의 LMK(Low Memory Killer) 및 Doze 모드에 의해 프로세스가 사망하지 않도록 24/7 상주 보장. |
+| **`Foreground Service` (`RelayService`)** | 상태바 고정 알림(Ongoing Notification)을 띄워 안드로이드 OS의 LMK(Low Memory Killer) 및 Doze 모드에 의해 프로세스가 사망하지 않도록 무중단 상시 가동 보장. |
 | **`SmsManager`** | UI 액티비티를 띄우지 않고 시스템 하드웨어 무선 모뎀을 다이렉트로 제어하여 단문(SMS) 및 장문(LMS) 멀티파트 전송 수행. |
 | **동적 설정 및 저장소 (`SharedPreferences`)** | 1번 번호(트리거), 3번 번호(수신자), 키워드 필터, 접두사(`[전달: ...]`) 포함 여부를 런타임에 동적으로 변경 가능. |
 | **부팅 자동 기동 (`BootReceiver`)** | 단말기가 방전 후 충전되어 재부팅되거나 정전 후 켜졌을 때 사람의 손길 없이 100% 무인 자동 복구. |
@@ -61,7 +61,7 @@ sequenceDiagram
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-    <!-- 2. 백그라운드 24/7 상주 및 무중단 권한 -->
+    <!-- 2. 백그라운드 상시 가동 및 무중단 권한 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" tools:ignore="ForegroundServiceType" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />

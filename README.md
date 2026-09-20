@@ -1,5 +1,5 @@
 # Hi_Dorm SMS Relay Bridge (Android)
-**24/7 Enterprise SMS Relay Daemon**
+**무인 자동 문자 중계기 (Enterprise Relay Daemon)**
 
 <p align="left">
   <img src="https://img.shields.io/badge/Platform-Android_10~15+-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Android Version"/>
@@ -104,7 +104,7 @@ flowchart TB
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  Hi_Dorm Relay                      [History] [Settings] │
-│  24/7 Enterprise Relay Daemon                            │
+│  실시간 무인 문자 중계 데몬                             │
 ├──────────────────────────────────────────────────────────┤
 │  ╭────────────────────────────────────────────────────╮  │
 │  │ SMS Relay Daemon                  [   Toggle   ]   │  │
@@ -186,8 +186,8 @@ flowchart TB
 
 ## 📱 2번 중계 단말기 필수 세팅 체크리스트
 
-> 💡 **앱 내 전용 [권한 및 24/7 상주 설정 마법사] 탑재:**  
-> 복잡하게 스마트폰 설정을 일일이 찾을 필요 없이, 메인 화면 상단의 **방패 아이콘(🛡️)** 또는 설정 메뉴의 **`권한 및 24/7 상주 설정 마법사`**를 터치하면 아래 항목들을 원스톱으로 점검하고 1초 만에 승인할 수 있습니다.
+> 💡 **앱 내 전용 [권한 및 상시 가동 설정 마법사] 탑재:**  
+> 복잡하게 스마트폰 설정을 일일이 찾을 필요 없이, 메인 화면 상단의 **방패 아이콘(🛡️)** 또는 설정 메뉴의 **`권한 및 상시 가동 설정 마법사`**를 터치하면 아래 항목들을 원스톱으로 점검하고 1초 만에 승인할 수 있습니다.
 
 단말기를 현장(관리실/서버실)에 상시 거치할 때 수행해야 하는 필수 설정입니다:
 
@@ -231,7 +231,7 @@ Hi_Dorm_SMS/
 │       │   │   ├── modem/
 │       │   │   │   └── SmsSender.kt    # SmsManager 연동, Multipart 분할 및 ResultCode 추적
 │       │   │   ├── service/
-│       │   │   │   ├── SmsRelayForegroundService.kt  # 24/7 포그라운드 상주 발송 엔진
+│       │   │   │   ├── SmsRelayForegroundService.kt  # 무중단 포그라운드 발송 엔진
 │       │   │   │   ├── BootReceiver.kt               # 기기 부팅 시 자동 시작 리시버
 │       │   │   │   ├── SmsReceiver.kt                # SMS 수신 감지 및 1➔3 직결 포워딩 리시버
 │       │   │   │   └── WatchdogReceiver.kt           # 프로세스 생존 감시 워치독
@@ -243,7 +243,7 @@ Hi_Dorm_SMS/
 │       │   │   └── ui/
 │       │   │       ├── MainActivity.kt               # 메인 대시보드 (Dark Architecture)
 │       │   │       ├── MainViewModel.kt              # 대시보드 뷰모델
-│       │   │       ├── PermissionsActivity.kt        # 24/7 상주 및 권한 사전 설정 마법사
+│       │   │       ├── PermissionsActivity.kt        # 상시 가동 및 권한 설정 마법사
 │       │   │       ├── SettingsActivity.kt           # iOS Inset Grouped 설정 화면
 │       │   │       ├── HistoryActivity.kt            # 전송 및 릴레이 내역 화면
 │       │   │       └── HistoryAdapter.kt             # 상태 뱃지 내역 리스트 어댑터

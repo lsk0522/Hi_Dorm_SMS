@@ -101,7 +101,7 @@ sequenceDiagram
 | **수신(Inbound) 리스너** | `android.provider.Telephony.SMS_RECEIVED` 리시버를 통한 착신 문자 파싱 -> 서버 Webhook (`POST /api/relay/inbound`) 즉각 전달 |
 | **듀얼 SIM 지원** | 단말기에 SIM이 2개 장착된 경우 발송할 `SubscriptionId`를 설정에서 선택 가능하도록 구현 |
 
-### 3.3 F-03: 무중단 백그라운드 생존 보장 (24/7 Resilience)
+### 3.3 F-03: 무중단 백그라운드 상시 가동 보장 (High Resilience)
 공기계 단말기는 1년 365일 중단 없이 상주해야 하므로 아래 안드로이드 백그라운드 제한 우회 처리를 반드시 구현합니다.
 
 1. **Foreground Service 등록:**
