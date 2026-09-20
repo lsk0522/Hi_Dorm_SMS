@@ -15,6 +15,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         registerReceiver(batteryReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         syncServiceSwitch()
+        refreshPersistenceStatusUI()
     }
 
     override fun onPause() {
@@ -118,6 +120,19 @@ class MainActivity : AppCompatActivity() {
                 val msg = if (allPassed) "모든 시뮬레이션 케이스 통과! (ALL PASSED)" else "일부 시뮬레이션 경고/실패"
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
             }
+        }
+
+        // 24/7 상주 사전 설정 버튼 리스너
+        binding.btnSetBatteryOpt.setOnClickListener {
+            checkBatteryOptimization(forcePrompt = true)
+        }
+
+        binding.btnSetOverlay.setOnClickListener {
+            openOverlaySettings()
+        }
+
+        binding.btnSetAppSettings.setOnClickListener {
+            openAppSettings()
         }
     }
 
@@ -224,22 +239,122 @@ class MainActivity : AppCompatActivity() {
         if (missing.isNotEmpty()) {
             permissionLauncher.launch(missing.toTypedArray())
         } else {
-            checkBatteryOptimization()
+            promptPersistenceSetupIfNeeded()
+        }
+    }
+
+    private fun promptPersistenceSetupIfNeeded() {
+        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+        val isBatteryIgnored = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pm.isIgnoringBatteryOptimizations(packageName)
+        } else true
+
+        val isOverlayGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Settings.canDrawOverlays(this)
+        } else true
+
+        if (!isBatteryIgnored || !isOverlayGranted) {
+            AlertDialog.Builder(this)
+                .setTitle("24/7 백그라운드 상주 사전 설정")
+                .setMessage("공기계 단말기가 화면이 꺼져 있어도 실시간 문자를 중계하려면 [배터리 사용량 제한 없음] 및 [다른 앱 위에 표시] 설정이 필수적입니다.\n\n대시보드의 '24/7 백그라운드 상주 사전 설정' 카드에서 설정을 진행해 주세요.")
+                .setPositiveButton("지금 설정") { _, _ ->
+                    if (!isBatteryIgnored) {
+                        checkBatteryOptimization(forcePrompt = true)
+                    } else if (!isOverlayGranted) {
+                        openOverlaySettings()
+                    }
+                }
+                .setNegativeButton("닫기", null)
+                .show()
+        }
+    }
+
+    private fun refreshPersistenceStatusUI() {
+        val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
+        val isBatteryIgnored = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pm.isIgnoringBatteryOptimizations(packageName)
+        } else true
+
+        val isOverlayGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Settings.canDrawOverlays(this)
+        } else true
+
+        if (isBatteryIgnored) {
+            binding.tvBatteryOptStatus.text = "✅ 제한 없음 (Doze 모드 해제됨)"
+            binding.tvBatteryOptStatus.setTextColor(ContextCompat.getColor(this, R.color.apple_green))
+            binding.btnSetBatteryOpt.text = "완료"
+            binding.btnSetBatteryOpt.isEnabled = false
+        } else {
+            binding.tvBatteryOptStatus.text = "⚠️ 최적화됨 (화면 꺼지면 슬립 위험)"
+            binding.tvBatteryOptStatus.setTextColor(ContextCompat.getColor(this, R.color.apple_orange))
+            binding.btnSetBatteryOpt.text = "해제하기"
+            binding.btnSetBatteryOpt.isEnabled = true
+        }
+
+        if (isOverlayGranted) {
+            binding.tvOverlayStatus.text = "✅ 다른 앱 위에 표시 허용됨"
+            binding.tvOverlayStatus.setTextColor(ContextCompat.getColor(this, R.color.apple_green))
+            binding.btnSetOverlay.text = "완료"
+            binding.btnSetOverlay.isEnabled = false
+        } else {
+            binding.tvOverlayStatus.text = "⚠️ 미허용 (백그라운드 생존 보장 권장)"
+            binding.tvOverlayStatus.setTextColor(ContextCompat.getColor(this, R.color.apple_orange))
+            binding.btnSetOverlay.text = "허용하기"
+            binding.btnSetOverlay.isEnabled = true
+        }
+
+        if (isBatteryIgnored && isOverlayGranted) {
+            binding.tvPersistenceSummary.text = "24/7 상주 준비 완료"
+            binding.tvPersistenceSummary.setBackgroundResource(R.drawable.apple_pill_green)
+            binding.tvPersistenceSummary.setTextColor(ContextCompat.getColor(this, R.color.apple_green))
+        } else {
+            binding.tvPersistenceSummary.text = "사전 설정 필요"
+            binding.tvPersistenceSummary.setBackgroundResource(R.drawable.apple_pill_red)
+            binding.tvPersistenceSummary.setTextColor(ContextCompat.getColor(this, R.color.apple_red))
         }
     }
 
     @SuppressLint("BatteryLife")
-    private fun checkBatteryOptimization() {
+    private fun checkBatteryOptimization(forcePrompt: Boolean = false) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+            if (!pm.isIgnoringBatteryOptimizations(packageName) || forcePrompt) {
                 val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                     data = Uri.parse("package:$packageName")
                 }
                 try {
                     startActivity(intent)
-                } catch (ignored: Exception) {}
+                } catch (e: Exception) {
+                    try {
+                        startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
+                    } catch (ignored: Exception) {}
+                }
             }
+        }
+    }
+
+    private fun openOverlaySettings() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName")
+            )
+            try {
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(this, "설정 화면을 열 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.parse("package:$packageName")
+        }
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "설정 화면을 열 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }
