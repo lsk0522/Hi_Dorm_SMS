@@ -51,6 +51,12 @@
             android:label="서버 및 전송 설정"
             android:parentActivityName=".ui.MainActivity" />
 
+        <activity
+            android:name=".ui.HistoryActivity"
+            android:exported="false"
+            android:label="전송 및 릴레이 내역"
+            android:parentActivityName=".ui.MainActivity" />
+
         <!-- 24/7 상주 Foreground Service -->
         <service
             android:name=".service.SmsRelayForegroundService"

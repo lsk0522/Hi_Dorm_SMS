@@ -86,6 +86,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
+        val openHistory = {
+            startActivity(Intent(this, HistoryActivity::class.java))
+        }
+        binding.btnHistory.setOnClickListener { openHistory() }
+        binding.btnViewHistory.setOnClickListener { openHistory() }
+
         binding.switchService.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 startRelayService()

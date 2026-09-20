@@ -18,6 +18,16 @@
             app:titleTextColor="#FFFFFF">
 
             <ImageButton
+                android:id="@+id/btnHistory"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="전송 내역"
+                android:src="@android:drawable/ic_menu_recent_history"
+                app:tint="#FFFFFF" />
+
+            <ImageButton
                 android:id="@+id/btnSettings"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -219,6 +229,14 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnViewHistory"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="전송 및 릴레이 내역 상세 보기 >" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

@@ -134,6 +134,20 @@ class SmsReceiver : BroadcastReceiver() {
                 Log.e(TAG, "릴레이 발송 실패: $recipient (${sendResult.errorMessage})")
             }
 
+            // 로컬 Room DB에 전송 내역 영속화
+            val entity = com.hidorm.smsrelay.data.local.MessageEntity(
+                taskId = taskId,
+                recipientPhone = recipient,
+                content = relayContent,
+                msgType = if (SmsMessageFormatter.isLms(relayContent)) "LMS" else "SMS",
+                status = if (sendResult.isSuccess) "SENT" else "FAILED",
+                resultCode = sendResult.statusString,
+                errorMessage = sendResult.errorMessage,
+                createdAt = System.currentTimeMillis(),
+                sentAt = System.currentTimeMillis()
+            )
+            app.database.messageDao().insert(entity)
+
             // 다중 수신자 간 최소 딜레이 (1초)
             if (recipientList.size > 1) {
                 kotlinx.coroutines.delay(1000L)

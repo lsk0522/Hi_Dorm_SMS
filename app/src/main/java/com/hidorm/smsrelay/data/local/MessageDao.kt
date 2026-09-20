@@ -49,6 +49,12 @@ interface MessageDao {
         sentAt: Long?
     )
 
+    @Query("SELECT * FROM messages ORDER BY createdAt DESC LIMIT :limit")
+    fun getRecentMessagesLiveData(limit: Int = 100): LiveData<List<MessageEntity>>
+
     @Query("DELETE FROM messages WHERE createdAt < :olderThanTimestamp")
     suspend fun deleteOldMessages(olderThanTimestamp: Long)
+
+    @Query("DELETE FROM messages")
+    suspend fun deleteAllMessages()
 }
