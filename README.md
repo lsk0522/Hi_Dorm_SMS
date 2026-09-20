@@ -1,10 +1,10 @@
 # Hi_Dorm SMS Relay Bridge (Android)
-**Apple StandBy Edition & 24/7 Enterprise SMS Relay Daemon**
+**24/7 Enterprise SMS Relay Daemon**
 
 <p align="left">
   <img src="https://img.shields.io/badge/Platform-Android_10~15+-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Android Version"/>
   <img src="https://img.shields.io/badge/Language-Kotlin_1.9.22-7F52FF?style=flat-square&logo=kotlin&logoColor=white" alt="Kotlin"/>
-  <img src="https://img.shields.io/badge/Design-Apple_StandBy_iOS_17/18-000000?style=flat-square&logo=apple&logoColor=white" alt="Apple StandBy"/>
+  <img src="https://img.shields.io/badge/Design-iOS_Dark_Architecture-000000?style=flat-square&logo=apple&logoColor=white" alt="iOS Dark Architecture"/>
   <img src="https://img.shields.io/badge/Architecture-Clean_+_MVVM_+_Room-0A84FF?style=flat-square" alt="Architecture"/>
   <img src="https://img.shields.io/badge/CI%2FCD-GitHub_Actions_Passed-30D158?style=flat-square&logo=githubactions&logoColor=white" alt="CI/CD"/>
   <img src="https://img.shields.io/badge/Release-v1.0.0-FF9F0A?style=flat-square" alt="Release"/>
@@ -12,7 +12,7 @@
 </p>
 
 > 기숙사 통합 관리 시스템(Hi_Dorm)과 공기계(알뜰폰 무제한 요금제 USIM)를 직결하여, 24시간 365일 무중단으로 문자(SMS/LMS)를 학생들에게 초저비용·고신뢰성으로 중계 발송하는 안드로이드 엔터프라이즈 브릿지 데몬 애플리케이션입니다.  
-> **Apple iOS 17/18 StandBy 다크 아키텍처**와 **독립형 P2P 자동 포워딩(1번➔2번➔3번)** 기술을 완벽하게 탑재했습니다.
+> **iOS 다크 아키텍처**와 **독립형 P2P 자동 포워딩(1번➔2번➔3번)** 기술을 완벽하게 탑재했습니다.
 
 ---
 
@@ -54,18 +54,18 @@ flowchart TB
 
 ---
 
-## 🎨 Apple StandBy Design System Specification
+## 🎨 UI & Design System Specification
 
-`Hi_Dorm_SMS`는 Apple Human Interface Guidelines(HIG) 및 iOS 17/18 StandBy 모드의 시각적 원칙을 1:1로 준수합니다.
+`Hi_Dorm_SMS`는 iOS 다크 모드 및 Human Interface Guidelines(HIG)의 시각적 원칙을 준수하여 설계되었습니다.
 
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  Hi_Dorm Relay                      [History] [Settings] │
-│  Apple StandBy Architecture Edition                      │
+│  24/7 Enterprise Relay Daemon                            │
 ├──────────────────────────────────────────────────────────┤
 │  ╭────────────────────────────────────────────────────╮  │
 │  │ SMS Relay Daemon                  [   Toggle   ]   │  │
-│  │ 🟢 DAEMON RUNNING (Apple Pill)                     │  │
+│  │ 🟢 DAEMON RUNNING (Live Pill)                      │  │
 │  │ [ ⚡ 충전 중 100% ]          [ Cloud Online (WS) ] │  │
 │  ╰────────────────────────────────────────────────────╯  │
 │  ╭────────────────────────────────────────────────────╮  │
@@ -80,8 +80,8 @@ flowchart TB
 │  │ Action & Simulation Center                         │  │
 │  │ [ Inset Input Phone Number                       ] │  │
 │  │ [ Inset Input Message                            ] │  │
-│  │ [ Apple Blue Primary Button: 단건 테스트 발송 ]   │  │
-│  │ [ Apple Orange Button: 🧪 7대 엣지 시뮬레이션 ]    │  │
+│  │ [ Primary Blue Button: 단건 테스트 발송 ]        │  │
+│  │ [ Accent Orange Button: 🧪 7대 엣지 시뮬레이션 ]  │  │
 │  ╰────────────────────────────────────────────────────╯  │
 │  LIVE CONSOLE OUTPUT                                     │
 │  ╭────────────────────────────────────────────────────╮  │
@@ -90,7 +90,7 @@ flowchart TB
 └──────────────────────────────────────────────────────────┘
 ```
 
-### 1. 시맨틱 컬러 팔레트 (iOS Semantic Palette)
+### 1. 시맨틱 컬러 팔레트 (Semantic Color Palette)
 * **Canvas Background:** `#000000` (OLED True Black, 0-nit 완전 소등으로 배터리 절감 및 번인 방지)
 * **Primary Card Surface:** `#1C1C1E` (Secondary System Background, 다크 1차 서피스)
 * **Secondary Inset Surface:** `#2C2C2E` (Tertiary System Background, 내부 컴포넌트 & 인셋 인풋)
@@ -102,7 +102,7 @@ flowchart TB
   - `system-red`: `#FF453A` (야간 모드 & 데몬 정지/실패)
 
 ### 2. G2 곡률 연속성 & 동심 곡률 공식
-Apple 특유의 부드러운 스퀴클(Squircle) 곡률을 XML Drawable로 완벽하게 이식했습니다:
+부드러운 스퀴클(Squircle) 곡률과 동심원 규칙을 XML Drawable로 구현했습니다:
 * **외곽 카드 곡률:** `22dp` (`apple_card_bg.xml`)
 * **내부 인셋 컴포넌트 곡률:** $\mathbf{R_{child} = R_{parent} - Padding} = 22\text{dp} - 8\text{dp} = \mathbf{14dp}$ (`apple_card_inner.xml`, `apple_input_bg.xml`)
 * **상태 뱃지:** 완전한 알약 캡슐(`pill shape`, radius `50dp`)
@@ -199,15 +199,15 @@ Hi_Dorm_SMS/
 │       │   │   │   ├── PhoneNumberNormalizer.kt      # 한국 전화번호 정규화 및 E.164 파싱
 │       │   │   │   └── SmsMessageFormatter.kt        # EUC-KR 90바이트 계산 및 LMS 포맷터
 │       │   │   └── ui/
-│       │   │       ├── MainActivity.kt               # Apple StandBy 메인 대시보드
+│       │   │       ├── MainActivity.kt               # 메인 대시보드 (Dark Architecture)
 │       │   │       ├── MainViewModel.kt              # 대시보드 뷰모델
 │       │   │       ├── SettingsActivity.kt           # iOS Inset Grouped 설정 화면
 │       │   │       ├── HistoryActivity.kt            # 전송 및 릴레이 내역 화면
-│       │   │       └── HistoryAdapter.kt             # Apple Pill 뱃지 내역 리스트 어댑터
+│       │   │       └── HistoryAdapter.kt             # 상태 뱃지 내역 리스트 어댑터
 │       │   └── res/
 │       │       ├── drawable/                         # 22dp 스퀴클, 14dp 동심 카드, 알약 뱃지
 │       │       ├── layout/                           # OLED True Black 3단 UI 레이아웃
-│       │       └── values/                           # Apple HIG 다크 모드 컬러 및 테마
+│       │       └── values/                           # 다크 모드 시맨틱 컬러 및 테마
 │       └── test/                                     # 단위 테스트 (정규화, 바이트 계산, 필터링)
 ├── SPECIFICATION.md                # 종합 개발 및 배포 기술 명세서
 └── README.md                       # 시스템 개요 및 운영 가이드

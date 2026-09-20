@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:letterSpacing="-0.01"
-                    android:text="Apple StandBy Architecture Edition"
+                    android:text="24/7 Enterprise Relay Daemon"
                     android:textColor="@color/apple_label_secondary"
                     android:textSize="13sp" />
             </LinearLayout>
