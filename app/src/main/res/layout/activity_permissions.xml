@@ -211,6 +211,51 @@
                             android:textSize="13sp" />
                     </LinearLayout>
 
+                    <!-- Google Restricted Settings Helper Card -->
+                    <LinearLayout
+                        android:id="@+id/layoutRestrictedSettingsHelp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/apple_card_inner"
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="⚠️ 구글 '제한된 설정'으로 SMS가 잠겼나요?"
+                                android:textColor="@color/apple_orange"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnUnlockRestrictedSettings"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:text="해제하러 가기"
+                                android:textColor="@color/apple_blue"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:lineSpacingExtra="3dp"
+                            android:text="안드로이드 13/14+는 외부 설치 앱의 SMS를 '제한된 설정'으로 차단합니다.\n👉 위 [해제하러 가기] 터치 ➔ 우측 상단 [점 3개(⋮)] ➔ [제한된 설정 허용] 터치 후 지문/PIN 인증을 거치면 SMS 권한을 켤 수 있습니다."
+                            android:textColor="@color/apple_label_secondary"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

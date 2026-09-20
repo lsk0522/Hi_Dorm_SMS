@@ -11,10 +11,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hidorm.smsrelay.R
 import com.hidorm.smsrelay.databinding.ActivityPermissionsBinding
 
@@ -24,7 +26,12 @@ class PermissionsActivity : AppCompatActivity() {
 
     private val smsPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) {
+    ) { permissions ->
+        val hasSend = permissions[Manifest.permission.SEND_SMS] == true
+        val hasReceive = permissions[Manifest.permission.RECEIVE_SMS] == true
+        if (!hasSend || !hasReceive) {
+            showRestrictedSettingsDialog()
+        }
         refreshStatus()
     }
 
@@ -78,15 +85,12 @@ class PermissionsActivity : AppCompatActivity() {
             requestExactAlarmPermission()
         }
 
+        binding.btnUnlockRestrictedSettings.setOnClickListener {
+            openAppDetailsSettings()
+        }
+
         binding.btnOpenAppDetails.setOnClickListener {
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                data = Uri.parse("package:$packageName")
-            }
-            try {
-                startActivity(intent)
-            } catch (e: Exception) {
-                Toast.makeText(this, "설정 화면을 열 수 없습니다.", Toast.LENGTH_SHORT).show()
-            }
+            openAppDetailsSettings()
         }
 
         binding.btnOpenDeveloperSettings.setOnClickListener {
@@ -199,6 +203,37 @@ class PermissionsActivity : AppCompatActivity() {
             binding.tvOverallBadgeText.text = "⚠️ 사전 설정 미완료"
             binding.tvOverallBadgeText.setTextColor(ContextCompat.getColor(this, R.color.apple_red))
         }
+        // 제한된 설정 가이드 노출 분기
+        binding.layoutRestrictedSettingsHelp.visibility = if (smsGranted) View.GONE else View.VISIBLE
+    }
+
+    private fun openAppDetailsSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.parse("package:$packageName")
+        }
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "설정 화면을 열 수 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showRestrictedSettingsDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("⚠️ 구글 SMS 권한 차단 해제 방법")
+            .setMessage(
+                "안드로이드 13/14+ 보안 정책에 의해 외부 설치 앱의 SMS 권한이 [제한된 설정]으로 잠겨 있을 수 있습니다.\n\n" +
+                "1. 아래 [설정 풀러 가기] 터치\n" +
+                "2. 앱 정보 우측 상단 [점 3개(⋮)] 터치\n" +
+                "3. [제한된 설정 허용] 터치 후 지문/PIN 인증\n" +
+                "4. [권한] ➔ [SMS] 항목을 '허용'으로 변경\n\n" +
+                "위 과정을 거치면 정상적으로 권한이 허용됩니다."
+            )
+            .setPositiveButton("설정 풀러 가기") { _, _ ->
+                openAppDetailsSettings()
+            }
+            .setNegativeButton("닫기", null)
+            .show()
     }
 
     @SuppressLint("BatteryLife")
