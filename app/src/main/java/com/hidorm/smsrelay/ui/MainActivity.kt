@@ -103,6 +103,16 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.btnRunSimulation.setOnClickListener {
+            binding.btnRunSimulation.isEnabled = false
+            Toast.makeText(this, "7대 엣지케이스 시뮬레이션을 시작합니다. 로그를 확인하세요.", Toast.LENGTH_SHORT).show()
+            viewModel.runSimulationSuite { allPassed ->
+                binding.btnRunSimulation.isEnabled = true
+                val msg = if (allPassed) "모든 시뮬레이션 케이스 통과! (ALL PASSED)" else "일부 시뮬레이션 경고/실패"
+                Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun syncServiceSwitch() {

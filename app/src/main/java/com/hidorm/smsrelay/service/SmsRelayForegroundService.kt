@@ -15,7 +15,6 @@ import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.hidorm.smsrelay.HiDormRelayApp
-import com.hidorm.smsrelay.R
 import com.hidorm.smsrelay.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +35,9 @@ class SmsRelayForegroundService : Service() {
     private val app by lazy { application as HiDormRelayApp }
     private val repository by lazy { app.repository }
     private val smsSender by lazy { app.smsSender }
+
+    private var isThermalThrottled = false
+    private var currentBatteryTemp = 0.0
 
     companion object {
         const val ACTION_START = "ACTION_START"
@@ -77,13 +79,13 @@ class SmsRelayForegroundService : Service() {
         // 1. WebSocket 연결
         connectWebSocket()
 
-        // 2. 메시지 발송 루프 시작
+        // 2. 메시지 발송 루프 시작 (스마트 재시도 & 과열 제어 포함)
         startMessageProcessingLoop()
 
         // 3. 대체 폴링 루프 시작 (백업용)
         startFallbackPollingLoop()
 
-        // 4. 하트비트 주기 발송 루프 시작
+        // 4. 하트비트 및 배터리 온도 모니터링 루프 시작
         startHeartbeatLoop()
 
         Log.i(TAG, "Hi_Dorm SMS Relay 서비스 가동 완료")
@@ -120,7 +122,7 @@ class SmsRelayForegroundService : Service() {
         serviceScope.launch {
             while (isActive && isRunning) {
                 try {
-                    // 일일 한도 체크 (스팸 방지)
+                    // 1. 일일 한도 체크 (스팸 방지 락)
                     val todayStart = repository.getTodayStartTimestamp()
                     val todaySent = app.database.messageDao().getTodaySentCount(todayStart)
                     if (todaySent >= repository.dailyLimit) {
@@ -131,8 +133,14 @@ class SmsRelayForegroundService : Service() {
 
                     val pending = repository.getNextPending()
                     if (pending != null) {
-                        wakeLock?.acquire(10000L) // 10초 임시 WakeLock 획득
-                        updateNotification("전송 중: ${pending.recipientPhone} (금일 $todaySent/${repository.dailyLimit}건)")
+                        wakeLock?.acquire(12000L) // 12초 임시 WakeLock 획득
+
+                        val statusText = if (isThermalThrottled) {
+                            "전송 중 (과열 쿨다운 ${currentBatteryTemp}°C): ${pending.recipientPhone}"
+                        } else {
+                            "전송 중: ${pending.recipientPhone} (금일 $todaySent/${repository.dailyLimit}건)"
+                        }
+                        updateNotification(statusText)
 
                         repository.updateMessageStatus(pending.taskId, "DISPATCHED")
 
@@ -151,19 +159,43 @@ class SmsRelayForegroundService : Service() {
                             )
                         } else {
                             Log.e(TAG, "발송 실패: ${pending.taskId}, 사유: ${result.errorMessage}")
-                            repository.updateMessageStatus(
-                                taskId = pending.taskId,
-                                status = "FAILED",
-                                resultCode = result.statusString,
-                                errorMessage = result.errorMessage
-                            )
+
+                            // 일시적 오류(무선망 일시 단절, 일반 오류 등) 시 3회까지 지수 백오프 재시도
+                            if (pending.retryCount < 2) {
+                                val nextRetry = pending.retryCount + 1
+                                Log.w(TAG, "재시도 예약 (${nextRetry}/3회): ${pending.taskId}")
+                                val updated = pending.copy(
+                                    status = "QUEUED",
+                                    retryCount = nextRetry,
+                                    errorMessage = result.errorMessage
+                                )
+                                app.database.messageDao().update(updated)
+                                delay(nextRetry * 5000L)
+                            } else {
+                                repository.updateMessageStatus(
+                                    taskId = pending.taskId,
+                                    status = "FAILED",
+                                    resultCode = result.statusString,
+                                    errorMessage = result.errorMessage
+                                )
+                            }
                         }
 
-                        // 통신사 스팸 방지 딜레이 적용 (기본 2초)
-                        delay(repository.sendDelayMs)
+                        // 통신사 스팸 방지 딜레이 적용 (과열 시 최소 8초로 지연 완화)
+                        val effectiveDelay = if (isThermalThrottled) {
+                            maxOf(repository.sendDelayMs, 8000L)
+                        } else {
+                            repository.sendDelayMs
+                        }
+                        delay(effectiveDelay)
                     } else {
-                        updateNotification("대기 중 (금일 누적 발송: $todaySent/${repository.dailyLimit}건)")
-                        delay(2000L) // 대기 큐 없을 시 2초 대기
+                        val idleStatus = if (isThermalThrottled) {
+                            "대기 중 (과열 완화 모드: ${currentBatteryTemp}°C)"
+                        } else {
+                            "대기 중 (금일 누적 발송: $todaySent/${repository.dailyLimit}건)"
+                        }
+                        updateNotification(idleStatus)
+                        delay(2000L)
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "메시지 처리 루프 오류: ${e.message}", e)
@@ -178,7 +210,6 @@ class SmsRelayForegroundService : Service() {
             while (isActive && isRunning) {
                 delay(10000L) // 10초 주기
                 try {
-                    // 웹소켓이 끊어졌거나 추가 태스크가 있을 경우 폴링
                     repository.pollPendingTasks()
                 } catch (e: Exception) {
                     Log.w(TAG, "폴링 중 오류: ${e.message}")
@@ -199,6 +230,19 @@ class SmsRelayForegroundService : Service() {
                     val status = batteryIntent?.getIntExtra(BatteryManager.EXTRA_STATUS, -1) ?: -1
                     val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                             status == BatteryManager.BATTERY_STATUS_FULL
+
+                    // 배터리 온도 체크 (45°C 이상 시 과열 보호 모드)
+                    val rawTemp = batteryIntent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) ?: -1
+                    if (rawTemp > 0) {
+                        currentBatteryTemp = rawTemp / 10.0
+                        if (currentBatteryTemp >= 45.0 && !isThermalThrottled) {
+                            isThermalThrottled = true
+                            Log.w(TAG, "배터리 과열 경고: ${currentBatteryTemp}°C (발송 딜레이 완화 가동)")
+                        } else if (currentBatteryTemp < 40.0 && isThermalThrottled) {
+                            isThermalThrottled = false
+                            Log.i(TAG, "배터리 온도 정상 복귀: ${currentBatteryTemp}°C")
+                        }
+                    }
 
                     val networkType = getNetworkType()
                     repository.sendHeartbeat(
@@ -234,11 +278,22 @@ class SmsRelayForegroundService : Service() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        val stopIntent = Intent(this, SmsRelayForegroundService::class.java).apply {
+            action = ACTION_STOP
+        }
+        val stopPendingIntent = PendingIntent.getService(
+            this,
+            1,
+            stopIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         return NotificationCompat.Builder(this, HiDormRelayApp.CHANNEL_ID)
             .setContentTitle("Hi_Dorm SMS Relay 중계기")
             .setContentText(contentText)
             .setSmallIcon(android.R.drawable.ic_dialog_email)
             .setContentIntent(pendingIntent)
+            .addAction(android.R.drawable.ic_media_pause, "서비스 중지", stopPendingIntent)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()

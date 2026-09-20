@@ -317,7 +317,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="테스트 발송 실행" />
+                        android:text="단건 테스트 발송 실행" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRunSimulation"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="🧪 7대 엣지케이스 자동 시뮬레이션 실행" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

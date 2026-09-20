@@ -71,6 +71,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun runSimulationSuite(onFinish: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val simulator = com.hidorm.smsrelay.simulator.SmsSimulationEngine(getApplication(), repository)
+            val results = simulator.runFullTestSuite { progressLog ->
+                appendLog(progressLog)
+            }
+            val allPassed = results.all { it.isPassed }
+            onFinish(allPassed)
+        }
+    }
+
     fun getDailyLimit(): Int = repository.dailyLimit
     fun isServiceEnabled(): Boolean = repository.isServiceEnabled
 }
