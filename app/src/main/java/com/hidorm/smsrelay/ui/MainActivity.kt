@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
     private val requiredPermissions = buildList {
         add(Manifest.permission.SEND_SMS)
         add(Manifest.permission.RECEIVE_SMS)
-        add(Manifest.permission.READ_SMS)
-        add(Manifest.permission.READ_PHONE_STATE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             add(Manifest.permission.POST_NOTIFICATIONS)
         }
