@@ -16,3 +16,5 @@ local.properties
 *.keystore
 *.jks
 !hidorm-relay-example.jks
+*.apk
+/build_artifacts/
