@@ -35,6 +35,13 @@ class SettingsActivity : AppCompatActivity() {
         binding.etApiKey.setText(repository.apiKey)
         binding.etSendDelay.setText(repository.sendDelayMs.toString())
         binding.etDailyLimit.setText(repository.dailyLimit.toString())
+
+        // 직결 자동 포워딩 설정 로드
+        binding.switchForwarding.isChecked = repository.isForwardingEnabled
+        binding.etTriggerSender.setText(repository.triggerSenderNumber)
+        binding.etTargetRecipient.setText(repository.targetRecipientNumber)
+        binding.etForwardKeyword.setText(repository.forwardKeywordFilter)
+        binding.switchIncludePrefix.isChecked = repository.includeSenderPrefix
     }
 
     private fun saveSettings() {
@@ -45,10 +52,12 @@ class SettingsActivity : AppCompatActivity() {
         val sendDelay = binding.etSendDelay.text?.toString()?.toLongOrNull() ?: 2000L
         val dailyLimit = binding.etDailyLimit.text?.toString()?.toIntOrNull() ?: 450
 
-        if (serverUrl.isBlank() || deviceId.isBlank()) {
-            Toast.makeText(this, "필수 항목(서버 URL, 기기 ID)을 입력해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
+        // 포워딩 항목
+        val isForwarding = binding.switchForwarding.isChecked
+        val triggerSender = binding.etTriggerSender.text?.toString()?.trim() ?: ""
+        val targetRecipient = binding.etTargetRecipient.text?.toString()?.trim() ?: ""
+        val forwardKeyword = binding.etForwardKeyword.text?.toString()?.trim() ?: ""
+        val includePrefix = binding.switchIncludePrefix.isChecked
 
         repository.serverUrl = serverUrl
         repository.wsUrl = wsUrl
@@ -57,7 +66,13 @@ class SettingsActivity : AppCompatActivity() {
         repository.sendDelayMs = sendDelay
         repository.dailyLimit = dailyLimit
 
-        Toast.makeText(this, "설정이 저장되었습니다. 서비스 재시작 시 적용됩니다.", Toast.LENGTH_SHORT).show()
+        repository.isForwardingEnabled = isForwarding
+        repository.triggerSenderNumber = triggerSender
+        repository.targetRecipientNumber = targetRecipient
+        repository.forwardKeywordFilter = forwardKeyword
+        repository.includeSenderPrefix = includePrefix
+
+        Toast.makeText(this, "설정이 저장되었습니다.", Toast.LENGTH_SHORT).show()
         finish()
     }
 }

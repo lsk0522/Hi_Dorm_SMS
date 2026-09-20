@@ -62,6 +62,27 @@ class RelayRepository(
         get() = prefs.getBoolean("service_enabled", false)
         set(value) = prefs.edit().putBoolean("service_enabled", value).apply()
 
+    // 1번 단말 -> 2번 단말 -> 3번 단말 직결 자동 포워딩 설정
+    var isForwardingEnabled: Boolean
+        get() = prefs.getBoolean("forwarding_enabled", true)
+        set(value) = prefs.edit().putBoolean("forwarding_enabled", value).apply()
+
+    var triggerSenderNumber: String
+        get() = prefs.getString("trigger_sender_number", "01012345678") ?: "01012345678"
+        set(value) = prefs.edit().putString("trigger_sender_number", value).apply()
+
+    var targetRecipientNumber: String
+        get() = prefs.getString("target_recipient_number", "01098765432") ?: "01098765432"
+        set(value) = prefs.edit().putString("target_recipient_number", value).apply()
+
+    var forwardKeywordFilter: String
+        get() = prefs.getString("forward_keyword_filter", "") ?: ""
+        set(value) = prefs.edit().putString("forward_keyword_filter", value).apply()
+
+    var includeSenderPrefix: Boolean
+        get() = prefs.getBoolean("include_sender_prefix", true)
+        set(value) = prefs.edit().putBoolean("include_sender_prefix", value).apply()
+
     private var cachedApiService: ApiService? = null
     private var lastBaseUrl: String = ""
 
