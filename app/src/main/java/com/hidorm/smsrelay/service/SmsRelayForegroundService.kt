@@ -209,6 +209,9 @@ class SmsRelayForegroundService : Service() {
         serviceScope.launch {
             while (isActive && isRunning) {
                 delay(10000L) // 10초 주기
+                if (repository.serverUrl.isBlank() || repository.serverUrl.contains("example.com")) {
+                    continue
+                }
                 try {
                     repository.pollPendingTasks()
                 } catch (e: Exception) {
@@ -244,13 +247,15 @@ class SmsRelayForegroundService : Service() {
                         }
                     }
 
-                    val networkType = getNetworkType()
-                    repository.sendHeartbeat(
-                        batteryLevel = batteryPct,
-                        isCharging = isCharging,
-                        networkType = networkType,
-                        signalDbm = -75
-                    )
+                    if (!repository.serverUrl.isBlank() && !repository.serverUrl.contains("example.com")) {
+                        val networkType = getNetworkType()
+                        repository.sendHeartbeat(
+                            batteryLevel = batteryPct,
+                            isCharging = isCharging,
+                            networkType = networkType,
+                            signalDbm = -75
+                        )
+                    }
                 } catch (e: Exception) {
                     Log.w(TAG, "하트비트 루프 오류: ${e.message}")
                 }

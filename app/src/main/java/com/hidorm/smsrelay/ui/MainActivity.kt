@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.hidorm.smsrelay.HiDormRelayApp
 import com.hidorm.smsrelay.R
 import com.hidorm.smsrelay.data.remote.WsConnectionState
 import com.hidorm.smsrelay.databinding.ActivityMainBinding
@@ -30,6 +31,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val app by lazy { application as HiDormRelayApp }
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this)[MainViewModel::class.java]
     }
@@ -218,7 +220,12 @@ class MainActivity : AppCompatActivity() {
                         binding.tvNetworkStatus.text = "서버 연결: 재연결 중..."
                     }
                     WsConnectionState.DISCONNECTED -> {
-                        binding.tvNetworkStatus.text = "서버 연결: 연결 끊김 (Offline / 백업 폴링 대기)"
+                        val isP2P = app.repository.serverUrl.contains("example.com")
+                        binding.tvNetworkStatus.text = if (isP2P) {
+                            "모드: P2P 무인 직결 포워딩 (정상 대기 중)"
+                        } else {
+                            "서버 연결: 연결 끊김 (Offline / 백업 폴링 대기)"
+                        }
                     }
                 }
             }

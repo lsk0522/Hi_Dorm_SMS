@@ -58,8 +58,9 @@ class WebSocketManager(
     }
 
     private fun doConnect() {
-        if (currentUrl.isBlank()) {
-            log("WebSocket URL이 지정되지 않았습니다.")
+        if (currentUrl.isBlank() || currentUrl.contains("example.com")) {
+            log("[System] P2P 독립 직결 모드 가동 중 (클라우드 서버 미연동)")
+            _connectionState.value = WsConnectionState.DISCONNECTED
             return
         }
 
@@ -110,7 +111,7 @@ class WebSocketManager(
     }
 
     private fun scheduleReconnect() {
-        if (!shouldReconnect) return
+        if (!shouldReconnect || currentUrl.isBlank() || currentUrl.contains("example.com")) return
 
         reconnectJob?.cancel()
         reconnectJob = scope.launch {
